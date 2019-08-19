@@ -27,61 +27,33 @@ $(document).ready(function() {
         $('.panel-cover').addClass('panel-cover--collapsed');
     }
 
+    function bounceOutUp() {
+        $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+            $('.navigation-wrapper').toggleClass('visible animated bounceOutUp');
+            $('.navigation-wrapper').off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
+        });
+        $('.navigation-wrapper').toggleClass('animated bounceInDown animated bounceOutUp');
+    }
+
     $('.btn-mobile-menu').click(function() {
-        if ($('.navigation-wrapper').css('display') == "block") {
-            $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-                $('.navigation-wrapper').toggleClass('visible animated bounceOutUp');
-                $('.navigation-wrapper').off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            });
-            $('.navigation-wrapper').toggleClass('animated bounceInDown animated bounceOutUp');
+        if ($(".navigation-wrapper").hasClass("bounceInDown")) {
+            bounceOutUp();
         } else {
             $('.navigation-wrapper').toggleClass('visible animated bounceInDown');
         }
         $('.btn-mobile-menu__icon').toggleClass('fa fa-list fa fa-angle-up animated fadeIn');
     });
 
-    // 判断是否为移动端
-    var isMobile = navigator.userAgent.toLowerCase().match(/(ipod|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) != null;
-
     // 点击下拉菜单以外的其他标签区域收起菜单生效
-    $(document).on('click', ':not(.mobile,.navigation-wrapper,.btn-mobile-menu,.btn-mobile-menu__icon,panel-main__content)', function(e) {
-        if ($('.navigation-wrapper').css('display') == "block" && isMobile) {
-            $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-                $('.navigation-wrapper').toggleClass('visible animated bounceOutUp');
-                $('.navigation-wrapper').off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            });
-            $('.navigation-wrapper').toggleClass('animated bounceInDown animated bounceOutUp');
-            $('.btn-mobile-menu__icon').toggleClass('fa fa-list fa fa-angle-up animated fadeIn');
-        }
-    });
-
-    // 点击下拉菜单以外的空白区域收起菜单生效
-    $(".panel-cover").on('click', ':not(.navigation-wrapper)', function(e) {
-        if ($('.navigation-wrapper').css('display') == "block" && isMobile) {
-            $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-                $('.navigation-wrapper').toggleClass('visible animated bounceOutUp');
-                $('.navigation-wrapper').off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            });
-            $('.navigation-wrapper').toggleClass('animated bounceInDown animated bounceOutUp');
+    $(".panel-main").on('click', ':not(.mobile,.btn-mobile-menu,.navigation-wrapper)', function(e) {
+        if ($(".navigation-wrapper").hasClass("bounceInDown")) {
+            bounceOutUp();
             $('.btn-mobile-menu__icon').toggleClass('fa fa-list fa fa-angle-up animated fadeIn');
         }
     });
     // 阻止冒泡事件执行
     $(".navigation-wrapper").click(function(event) {
         event.stopPropagation();
-    });
-
-    $('.navigation-wrapper .blog-button').click(function() {
-        if ($('.navigation-wrapper').css('display') == "block") {
-            $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-                $('.navigation-wrapper').toggleClass('visible animated bounceOutUp');
-                $('.navigation-wrapper').off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            });
-
-            $('.navigation-wrapper').toggleClass('animated bounceInDown animated bounceOutUp');
-        }
-
-        $('.btn-mobile-menu__icon').toggleClass('fa fa-list fa fa-angle-up animated fadeIn');
     });
     $('.year').html(new Date().getFullYear());
 });
